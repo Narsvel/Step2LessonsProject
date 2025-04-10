@@ -2,17 +2,26 @@ package lesson1hw;
 
 public class MyHashMapRealization {
 
-    private static final int DEFAULT_CAPACITY = 16;
-    private int size;
+    private static final int DEFAULT_CAPACITY = 16; //DEFAULT размер внутреннего массива
+    private int size;                   //размер MyHashMapRealization
+    private final Bucket[] arrayBucket; //внутренний масиив бакетов
 
-    static class Bucket<K,V> {
+    public MyHashMapRealization() {
+        arrayBucket = new Bucket[DEFAULT_CAPACITY];
+    }
+
+    public MyHashMapRealization(int capacity) {
+        arrayBucket = new Bucket[capacity];
+    }
+
+    private static class Bucket<Key,Value> {
         final int hash;
-        final K key;
-        V value;
+        final Key key;
+        Value value;
         //реализация LinkedList, ссыска на следующий Bucket
-        Bucket<K, V> nextBucket;
+        Bucket<Key, Value> nextBucket;
 
-        public Bucket(int hash, K key, V value, Bucket<K, V> nextBucket) {
+        public Bucket(int hash, Key key, Value value, Bucket<Key, Value> nextBucket) {
             this.hash = hash;
             this.key = key;
             this.value = value;
@@ -23,47 +32,27 @@ public class MyHashMapRealization {
             return hash;
         }
 
-        public K getKey() {
+        public Key getKey() {
             return key;
         }
 
-        public V getValue() {
+        public Value getValue() {
             return value;
         }
 
-        public Bucket<K, V> getNextBucket() {
+        public Bucket<Key, Value> getNextBucket() {
             return nextBucket;
         }
 
-        public void setValue(V value) {
+        public void setValue(Value value) {
             this.value = value;
         }
 
-        public void setNextBucket(Bucket<K, V> nextBucket) {
+        public void setNextBucket(Bucket<Key, Value> nextBucket) {
             this.nextBucket = nextBucket;
         }
 
-        @Override
-        public final boolean equals(Object object) {
-            if (!(object instanceof Bucket<?, ?> bucket)) return false;
-
-            return key.equals(bucket.key) && value.equals(bucket.value);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = key.hashCode();
-            result = 31 * result + value.hashCode();
-            return result;
-        }
     }
-
-    public MyHashMapRealization() {
-
-    }
-
-
-
 
 
 }
