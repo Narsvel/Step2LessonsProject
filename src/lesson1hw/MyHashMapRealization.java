@@ -53,7 +53,7 @@ public class MyHashMapRealization<Key, Value> {
 
         @Override
         public String toString() {
-            return "{key=" + key + ", value=" + value + '}';
+            return "{key=" + key + ", value=" + value + "}; ";
         }
 
     }
@@ -68,10 +68,6 @@ public class MyHashMapRealization<Key, Value> {
 
     public Value put(Key key, Value value) {
         int keyHash = keyHash(key);
-        if (!checkingClassesKeyAndValue(key, value)) { //проверка совпадает ли Class Key и Value с значениями в arrayBucket
-            System.out.println("The Class of the key or value does not match!");
-            return value;
-        }
         if (arrayBucket[keyHash % arrayBucket.length] != null) {    //если в ячейке масива есть Bucket
             Bucket bucket = arrayBucket[keyHash % arrayBucket.length];
             return putInBucket(keyHash, key, value, bucket); //функция для прохода по LinkedList бакетов, сравнения и изменения значений Value
@@ -82,23 +78,8 @@ public class MyHashMapRealization<Key, Value> {
         }
     }
 
-    private boolean checkingClassesKeyAndValue(Key key, Value value) { //проверка совпадает ли Class Key и Value с значениями в arrayBucket
-        for (int i = 0; i < arrayBucket.length; i++) {
-            if (arrayBucket[i] != null) {
-                Bucket bucket = arrayBucket[i];
-                Object keyBucket = bucket.getKey();
-                Object valueBucket = bucket.getValue();
-                if (!(keyBucket != null && keyBucket.getClass() == key.getClass() &&
-                        valueBucket != null && valueBucket.getClass() == value.getClass())) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     private Value putInBucket(int keyHash, Key key, Value value, Bucket bucket) { //функция для прохода по LinkedList бакетов, сравнения и изменения значений Value
-        if (bucket.hash == keyHash  && bucket.key.equals(key)) { //если Hash и  Equals true изменяем значение Value в Bucket
+        if (bucket.getHash() == keyHash  && bucket.getKey().equals(key)) { //если Hash и  Equals true изменяем значение Value в Bucket
             Value oldValue = (Value) bucket.getValue();
             bucket.setValue(value);
             return oldValue; //возвращаем старое значение Value
@@ -121,8 +102,9 @@ public class MyHashMapRealization<Key, Value> {
         for (int i = 0; i < arrayBucket.length; i++) {
             Bucket bucket = arrayBucket[i];
             stringBuilder.append(toStringAddBuckets(bucket));
+            stringBuilder.append("\n");
         }
-        return "MyHashMapRealization(" + stringBuilder + ')';
+        return "MyHashMapRealization( \n" + stringBuilder + ')';
     }
 
     private String toStringAddBuckets(Bucket bucket) { //метод проходит по Bucket в ячейке масива и возвращае их значения в одной строке
