@@ -12,6 +12,7 @@ public class MainTest {
             myHashMap.put(i, "Значение" + i);
         }
 
+        System.out.println(myHashMap.put(234, null));
         System.out.println(myHashMap);
         System.out.println(myHashMap.size());
         System.out.println(myHashMap.isEmpty());
